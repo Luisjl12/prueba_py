@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>CRUD de productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Gestión de Productos</h1>
+    <h2>Gestión de Productos</h2>
+    
 
   <!-- Formulario para agregar producto -->
-  <h2>Agregar Producto</h2>
+  
   <form id="formAgregar">
-    Nombre: <input type="text" id="name"><br>
-    Precio: <input type="number" step="0.01" id="price"><br>
-    Stock: <input type="number" id="stock"><br>
-    <button type="submit">Agregar</button>
+    
+   <p> Nombre del producto: <input class="col-sm-6" type="text" id="name" placeholder="Escribe el nombre de un producto" ></p>
+   <p> Precio: <input class ="col-sm-6"type="number" step="0.01" id="price" placeholder="Escribe su precio"><br></p>
+    <p>Stock: <input class="col-sm-6" type="number" id="stock" placeholder="Escribe el stock"><br></p>
+    <button type="submit" class="btn btn-success">Agregar</button>
   </form>
+  
   <div id="resultadoError"></div>
 
     <!--Buscador-->
   <h2>Buscar por Id</h2>
   <form id="formBuscar">
     ID: <input type="number" id="buscarId">
-     <button type="submit">Buscar</button>
+     <button type="submit" class="btn btn-primary">Buscar</button>
   </form>
   <div id="resultadoBusqueda">
 
   <!-- Tabla para mostrar productos -->
   <h2>Lista de Productos</h2>
-  <table border="1" id="tablaProductos">
-    <thead>
+  <table border="1" id="tablaProductos" class="table">
+    <thead class="thead-dark">
       <tr>
-        <th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -52,8 +60,8 @@
                     <td>${p.price}</td>
                     <td>${p.stock}</td>
                     <td>
-                        <button onClick="eliminarProducto(${p.id})">Eliminar</button>
-                        <button onClick="editarProducto(${p.id},'${p.name}', ${p.price}, ${p.stock})">Editar</button>
+                        <button onClick="eliminarProducto(${p.id})" class="btn btn-danger">Eliminar</button>
+                        <button onClick="editarProducto(${p.id},'${p.name}', ${p.price}, ${p.stock})" class="btn btn-warning">Editar</button>
                     </td>
                 </tr>`;
             tbody.innerHTML += fila; 
@@ -155,5 +163,8 @@
         }
     }); 
   </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
 </body>
 </html>
