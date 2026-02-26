@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD de productos</title>
+</head>
+<body>
+    <h1>Gestión de Productos</h1>
+
+  <!-- Formulario para agregar producto -->
+  <h2>Agregar Producto</h2>
+  <form id="formAgregar">
+    Nombre: <input type="text" id="name"><br>
+    Precio: <input type="number" step="0.01" id="price"><br>
+    Stock: <input type="number" id="stock"><br>
+    <button type="submit">Agregar</button>
+  </form>
+  <div id="resultadoError"></div>
+
+    <!--Buscador-->
+  <h2>Buscar por Id</h2>
+  <form id="formBuscar">
+    ID: <input type="number" id="buscarId">
+     <button type="submit">Buscar</button>
+  </form>
+  <div id="resultadoBusqueda">
+
+  <!-- Tabla para mostrar productos -->
+  <h2>Lista de Productos</h2>
+  <table border="1" id="tablaProductos">
+    <thead>
+      <tr>
+        <th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+  <script>
+    const API_URL="http://localhost:8000/products"; 
+    //Cargar productos
+    async function cargarProductos(){
+        const res=await fetch(API_URL);
+        const productos = await res.json(); 
+        const tbody=document.querySelector("#tablaProductos tbody")
+        tbody.innerHTML=""; 
+        productos.forEach(p=>{
+            const fila = `
+                <tr>
+                    <td>${p.id}</td>
+                    <td>${p.name}</td>
+                    <td>${p.price}</td>
+                    <td>${p.stock}</td>
+                    <td>
+                        <button onClick="eliminarProducto(${p.id})">Eliminar</button>
+                        <button onClick="editarProducto(${p.id},'${p.name}', ${p.price}, ${p.stock})">Editar</button>
+                    </td>
+                </tr>`;
+            tbody.innerHTML += fila; 
+        }); 
+    }
+
+    async function eliminarProducto(id){
+        await fetch(`${API_URL}/${id}`, {method:"DELETE"}); 
+        cargarProductos(); 
+    }
+
+    cargarProductos(); 
+
+    //Editar
+    function editarProducto(id, name, price, stock){
+        document.getElementById("name").value=name;
+        document.getElementById("price").value=price; 
+        document.getElementById("stock").value=stock; 
+
+        let editMode=false; 
+        let editId=null;
+
+        //Cambiar el comportamiento del formulario
+        const form=document.getElementById("formAgregar"); 
+        const boton= form.querySelector("button"); 
+
+        //Cambiar de boton 
+        boton.textContent="Confirmar edicion"; 
+
+        form.onsubmit=async e =>{
+            e.preventDefault(); 
+            const data={
+                name: document.getElementById("name").value, 
+                price:parseFloat(document.getElementById("price").value),
+                stock:parseInt(document.getElementById("stock").value)
+            }; 
+
+            await fetch(`${API_URL}/${id}`,{
+                method: "PUT", 
+                headers:{"Content-Type": "application/json"}, 
+                body: JSON.stringify(data)
+            }); 
+            cargarProductos();
+
+            //Restaurar el formulario despues de editar
+            form.onsubmit = agregarProducto; 
+            boton.textContent="Agregar"; 
+            form.reset(); 
+        }; 
+    }
+
+    //Agregar productos
+    async function agregarProducto(e){
+        e.preventDefault(); 
+        const data = {
+            name: document.getElementById("name").value, 
+            price: parseFloat(document.getElementById("price").value), 
+            stock: parseInt(document.getElementById("stock").value)
+        }; 
+
+        const res=await fetch(API_URL, {
+            method:"POST", 
+            headers: {"Content-Type": "appication/json"}, 
+            body:JSON.stringify(data)
+        }); 
+
+        const resultado= await res.json(); 
+        const div = document.getElementById("resultadoError"); 
+
+        if (!res.ok){
+            div.innerHTML=`<pstyle="color:red;">${resultado.error}</p>`;
+        } 
+            else{
+                div.innerHTML="";
+                cargarProductos(); 
+                document.getElementById("formAgregar").reset(); 
+            }
+    }
+
+    document.getElementById("formAgregar").onsubmit=agregarProducto; 
+
+    //Buscar por ID
+    document.getElementById("formBuscar").addEventListener("submit", async e =>{
+        e.preventDefault(); 
+        const id = document.getElementById("buscarId").value; 
+        const res = await fetch(`${API_URL}/${id}`); 
+        const producto=await res.json(); 
+        const div = document.getElementById("resultadoBusqueda"); 
+
+        if (producto.error){
+            div.innerHTML=`<p style ="color:red;">${producto.error}</p>`; 
+        } else {
+            div.innerHTML=`
+            <p><strong>ID:</strong>${producto.id}</p>
+            <p><stong>Nombre:</strong>${producto.name}</p>
+            <p><strong>Precio:</strong>${producto.price}</p>
+            <p><strong>Stock:</strong>${producto.stock}</p>
+            `;
+        }
+    }); 
+  </script>
+</body>
+</html>
