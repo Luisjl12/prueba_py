@@ -1,32 +1,3 @@
-# prueba_tecnica
-Informacion de la prueba:
-Código fuente, base de datos y readme  de la prueba tecnica. 
-La prueba tecnica consiste en realizar una conexion con una base de datos "store" en mysql y a partir de ella realizar un crud (create, read update, delete) para la tabla "products" para los campos "name" y "price". La particularidad principal del crud es que se va a manejar mediante API REST la arquitectura de software para intercambiar peticiones HTTP. 
-
-Lenguaje utilizado:
-1. El proyecto esta elaborado en python sin framework por lo cual solo es necesario tener instalado el lenguage.
-2. Para verificar la version de python desde el cmd python --version
-3. Antes de probar la app se debe de instalar lo siguiente desde la terminal de la carpeta del proyecto: pip install mysql.connector-python
-4. Tambien se debe de tener instalado la siguiente libreria: pip install simpleJson. Esta para poder hacer las pruebas correctas usando         postman
-   
-Base de datos:
-1. Se uso el gestor de base de datos de MySql incluido en la paqueteria de software de xampp.
-2. Se puede usar Mysql Server pero en este caso se utilizo la version de xampp.
-   
-Extras:
-1. Postman para probar las API
-2. JavaScript y HTML para el front-end.
-3. De preferencia tener instalado node.js
-
-Ejecucion: 
-1. Descargar el .zip de github y estraerlo en el directorio que se desee
-2. La base de datos importarla en phpMyAdmin de Xampp. Para poder entrar active el servidor apache y mysql de xampp y entrar a la siguiente direccion: localhosy/phpMyAdmin/.
-3. Crear una base de datos con el nombre: store. Despues en la opcion de import seleccionar el archivo .sql de la base de datos.
-4. Ejecutar el script de el servidor llamado ServidorHttp. Una vez ejecutado abrir el navegador con la siguiente direccion: http://localhost:8000 para verificar que el servidor ya fue levantado.
-5. Si el servidor ya esta activo abrir el archivo html. Si la instalacion fue correcta se veran los registros iniciales de la base de datos
-6. Cuando los registros ya se visualizan en la tabla ahora si se puede probar todas las operaciones crud
-   Nota: El servidor no es asincrono o dinamico, por lo que si hace un cambio en este se debe de volver a ejecutar y probar de nuevo. Si      los registros no aparecen recargar la pagina.
-9. Si se desea probar las API como tal se puede usar herramientas como Postman.
-
-Recomendaciones: 
-Instalar las librerias para la conexion de mysql y las librerias de json ya mencionadas para probar las API. 
+python 3.3.18
+mysql-connector-python 9.6.0
+simpleJson 3.20.2 
